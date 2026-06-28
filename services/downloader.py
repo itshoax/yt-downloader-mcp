@@ -18,7 +18,7 @@ class Downloader():
           'title': info.get('title'),
           'path': f"{self.options['outtmpl']}",
         }
-    except Exception as e
+    except Exception as e:
       print(f"Download failed: {str(e)}")
       return {
         'status': 'failed',

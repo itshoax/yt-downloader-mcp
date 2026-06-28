@@ -13,21 +13,27 @@ class VideoInfo():
       'no-playlist': True,
     }
 
+  def _format_qualities(self, qualities: list) -> list:
+    for format in qualities:
+      if format.get('resolution') and format.get('resolution') != 'audio only':
+        qualities.add(format.get('resolution'))
+
+    sorted_qualities = sorted(
+      qualities,
+      key=lambda s: [int(x) for x in s.split('x')]
+    )
+    return sorted_qualities
+
   def get_info(self, url):
-    with YoutubeDL(self.options) as ydl:
-      info = ydl.extract_info(url, download=False)
-      qualities = set()
-      for format in info.get('formats', []):
-        if format.get('resolution') and format.get('resolution') != 'audio only':
-          qualities.add(format.get('resolution'))
+    try:
+      with YoutubeDL(self.options) as ydl:
+        info = ydl.extract_info(url, download=False)
 
-      sorted_qualities = sorted(
-        qualities,
-        key=lambda s: [int(x) for x in s.split('x')]
-      )
-
-      result = {
-        'title': info.get('title'),
-        'qualities': sorted_qualities
-      }
-      return result
+        return {
+          'title': info.get('title'),
+          'duration': info.get('duration'),
+          'qualities': self._format_qualities(info.get('formats', []))
+        }
+    except Exception as e:
+      print(f"Info fetching failed: {str(e)}")
+      return { 'error': str(e) }
