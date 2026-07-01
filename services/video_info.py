@@ -14,12 +14,13 @@ class VideoInfo():
     }
 
   def _format_qualities(self, qualities: list) -> list:
+    sorted_qualities = set()
     for format in qualities:
       if format.get('resolution') and format.get('resolution') != 'audio only':
-        qualities.add(format.get('resolution'))
+        sorted_qualities.add(format.get('resolution'))
 
     sorted_qualities = sorted(
-      qualities,
+      sorted_qualities,
       key=lambda s: [int(x) for x in s.split('x')]
     )
     return sorted_qualities

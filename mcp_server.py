@@ -40,4 +40,5 @@ def download_video(url: str, resolution: int = 1080):
   return Downloader(resolution, '/tmp').download_video(url) # passing '/tmp' as the output directory later will replace it with user input
 
 if __name__ == '__main__':
+  get_video_info('https://www.youtube.com/watch?v=3K4E_D3opQo')
   mcp.run()
