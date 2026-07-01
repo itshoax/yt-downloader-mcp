@@ -1,4 +1,5 @@
 from yt_dlp import YoutubeDL
+from typing import cast, Any
 
 class VideoInfo():
   def __init__(self):
@@ -27,13 +28,13 @@ class VideoInfo():
 
   def get_info(self, url):
     try:
-      with YoutubeDL(self.options) as ydl:
+      with YoutubeDL(cast(Any, self.options)) as ydl: # type : ignore
         info = ydl.extract_info(url, download=False)
 
         return {
           'title': info.get('title'),
           'duration': info.get('duration'),
-          'qualities': self._format_qualities(info.get('formats', []))
+          'qualities': self._format_qualities(info.get('formats') or [])
         }
     except Exception as e:
       print(f"Info fetching failed: {str(e)}")

@@ -1,4 +1,5 @@
 from yt_dlp import YoutubeDL
+from typing import cast, Any
 
 class Downloader():
   def __init__(self, resolution: int = 1080, output_dir: str = '/tmp'):
@@ -11,7 +12,7 @@ class Downloader():
 
   def download_video(self, url):
     try:
-      with YoutubeDL(self.options) as ydl:
+      with YoutubeDL(cast(Any, self.options)) as ydl:
         info = ydl.extract_info(url)
         return {
           'status': 'success',
