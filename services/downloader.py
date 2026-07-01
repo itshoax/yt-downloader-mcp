@@ -1,5 +1,6 @@
 from yt_dlp import YoutubeDL
 from typing import cast, Any
+import logging
 
 class Downloader():
   def __init__(self, resolution: int = 1080, output_dir: str = '/tmp'):
@@ -9,6 +10,7 @@ class Downloader():
       'merge_output_format': 'mp4',
       'progress_hooks': [self._on_progress],
     }
+    self.logger = logging.getLogger(self.__class__.__name__)
 
   def download_video(self, url):
     try:
@@ -20,7 +22,7 @@ class Downloader():
           'path': f"{self.options['outtmpl']}",
         }
     except Exception as e:
-      print(f"Download failed: {str(e)}")
+      self.logger.error(f'Download failed: {e}')
       return {
         'status': 'failed',
         'error': str(e),

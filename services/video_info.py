@@ -1,5 +1,6 @@
 from yt_dlp import YoutubeDL
 from typing import cast, Any
+import logging
 
 class VideoInfo():
   def __init__(self):
@@ -13,6 +14,7 @@ class VideoInfo():
       'writethumbnail': False,
       'no-playlist': True,
     }
+    self.logger = logging.getLogger(self.__class__.__name__)
 
   def _format_qualities(self, qualities: list) -> list:
     sorted_qualities = set()
@@ -37,5 +39,5 @@ class VideoInfo():
           'qualities': self._format_qualities(info.get('formats') or [])
         }
     except Exception as e:
-      print(f"Info fetching failed: {str(e)}")
+      self.logger.error(f'Download failed: {e}')
       return { 'error': str(e) }

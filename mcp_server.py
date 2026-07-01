@@ -2,8 +2,10 @@ from services.downloader import Downloader
 from fastmcp import FastMCP
 from services.video_info import VideoInfo
 from validations.video_validator import validate_youtube_url, validate_resolution
+import logging
 
 mcp = FastMCP('yt-downloader')
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 
 @mcp.tool()
 def get_video_info(url: str) -> dict:
@@ -40,5 +42,4 @@ def download_video(url: str, resolution: int = 1080):
   return Downloader(resolution, '/tmp').download_video(url) # passing '/tmp' as the output directory later will replace it with user input
 
 if __name__ == '__main__':
-  get_video_info('https://www.youtube.com/watch?v=3K4E_D3opQo')
   mcp.run()
