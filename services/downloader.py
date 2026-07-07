@@ -40,3 +40,27 @@ class Downloader():
 
     if d['status'] == 'error':
       return print(f'Download error: {d.get("error")}')
+
+  def download_playlist(self, url):
+    try:
+      results = []
+      with YoutubeDL(cast(Any, self.options)) as ydl:
+        info = ydl.extract_info(url)
+        entries = info.get('entries', [])
+        for entry in entries:
+          results.append({
+            'title': entry.get('title'),
+            'path': f"{self.options['outtmpl']}",
+          })
+      return {
+        'status': 'success',
+        'playlist_title': info.get('title'),
+        'videos': results,
+        'total_videos': len(results),
+      }
+    except Exception as e:
+      self.logger.error(f'Playlist download failed: {e}')
+      return {
+        'status': 'failed',
+        'error': str(e),
+      }

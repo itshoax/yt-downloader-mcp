@@ -30,7 +30,7 @@ class VideoInfo():
 
   def get_info(self, url):
     try:
-      with YoutubeDL(cast(Any, self.options)) as ydl: # type : ignore
+      with YoutubeDL(cast(Any, self.options)) as ydl:
         info = ydl.extract_info(url, download=False)
 
         return {
